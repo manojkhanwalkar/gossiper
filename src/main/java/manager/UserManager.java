@@ -12,6 +12,27 @@ public class UserManager {
 
 
 
+    static class UserManagerHolder
+    {
+        static UserManager instance = new UserManager();
+    }
+
+
+    public static UserManager getInstance()
+    {
+        return UserManagerHolder.instance;
+    }
+
+    private UserManager()
+    {
+
+    }
+
+
+
+
+
+
     Map<String,Integer> userids = new HashMap<>();
 
     List<String> useridList = new ArrayList<>();
@@ -43,6 +64,7 @@ public class UserManager {
 
     public void deleteUser(User user)
     {
+
         if (userids.containsKey(user.getId()))
         {
             userids.remove(user.getId());
@@ -56,6 +78,10 @@ public class UserManager {
             // let the user stay in the DAG as the next restart will remove it .
 
 
+        }
+        else
+        {
+            System.out.println("User not found " + user);
         }
     }
 

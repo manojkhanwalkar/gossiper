@@ -2,6 +2,7 @@ package services;
 
 import com.codahale.metrics.annotation.Timed;
 import event.AddUser;
+import event.DeleteUser;
 import processor.Dispatcher;
 
 
@@ -43,7 +44,7 @@ public class GossiperResource {
     @Timed
     @Path("/create")
     @Produces(MediaType.APPLICATION_JSON)
-    public String exchange(AddUser request) {
+    public String createUser(AddUser request) {
 
 
         dispatcher.dispatch(request);
@@ -51,6 +52,22 @@ public class GossiperResource {
        // return keyExchangeManager.processExchange(request);
 
         return "User added";
+
+
+    }
+
+    @POST
+    @Timed
+    @Path("/delete")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String deleteUser(DeleteUser request) {
+
+
+        dispatcher.dispatch(request);
+
+        // return keyExchangeManager.processExchange(request);
+
+        return "User deleted";
 
 
     }

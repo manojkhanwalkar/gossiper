@@ -5,6 +5,7 @@ import event.*;
 public class Dispatcher {
 
     AddUserProcessor addUserProcessor = new AddUserProcessor();
+    DeleteUserProcessor deleteUserProcessor = new DeleteUserProcessor();
 
     public void dispatch(AddPost event)
     {
@@ -23,7 +24,7 @@ public class Dispatcher {
 
     public void dispatch(DeleteUser event)
     {
-
+        deleteUserProcessor.process(event);
     }
 
     public void dispatch(FollowSubject event)

@@ -2,6 +2,7 @@ package client;
 
 import event.AddUser;
 
+import event.DeleteUser;
 import util.*;
 
 import java.time.LocalDateTime;
@@ -22,15 +23,28 @@ public class ClientVerifier {
 
     }
 
-    public void addUser() throws Exception
+    public void addUser(String name ) throws Exception
     {
         AddUser addUser = new AddUser();
-        addUser.setName("A");
+        addUser.setName(name);
 
         String response = connection.send(JSONUtil.toJSON(addUser),"create");
 
         System.out.println(response);
     }
+
+
+    public void deleteUser(String name) throws Exception
+    {
+        DeleteUser deleteUser = new DeleteUser();
+        deleteUser.setName(name);
+
+        String response = connection.send(JSONUtil.toJSON(deleteUser),"delete");
+
+        System.out.println(response);
+    }
+
+
 
 
 
@@ -42,8 +56,11 @@ public class ClientVerifier {
 
         ClientVerifier verifier = new ClientVerifier();
 
-        verifier.addUser();
+        for (int i=0;i<26;i++)
+            verifier.addUser(String.valueOf('A'+i));
 
+        for (int i=0;i<26;i++)
+            verifier.deleteUser(String.valueOf('A'+i));
 
 
 

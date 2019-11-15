@@ -9,7 +9,7 @@ import manager.UserManager;
 
 public class AddUserProcessor implements Processor{
 
-    UserManager userManager = new UserManager();
+    UserManager userManager = UserManager.getInstance();
 
     public void process(Event event)
     {
