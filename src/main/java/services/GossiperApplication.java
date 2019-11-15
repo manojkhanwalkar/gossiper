@@ -1,11 +1,9 @@
 package services;
 
-import constants.Constants;
+
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import util.AppHealthCheck;
-import util.DiscoveryLifeCycle;
 
 
 public class GossiperApplication extends Application<GossiperConfiguration> {
@@ -33,11 +31,11 @@ public class GossiperApplication extends Application<GossiperConfiguration> {
                 configuration.getTemplate(),
                 configuration.getDefaultName()
         );
-        DiscoveryLifeCycle myManagedObject = new DiscoveryLifeCycle(Constants.BureauServiceUrl,Constants.BureauServiceType, Constants.BureauServiceHealthUrl);
-        environment.lifecycle().manage(myManagedObject);
+   //     DiscoveryLifeCycle myManagedObject = new DiscoveryLifeCycle(Constants.BureauServiceUrl,Constants.BureauServiceType, Constants.BureauServiceHealthUrl);
+     //   environment.lifecycle().manage(myManagedObject);
 
         environment.jersey().register(resource);
-        environment.healthChecks().register("APIHealthCheck", new AppHealthCheck());
+       // environment.healthChecks().register("APIHealthCheck", new AppHealthCheck());
 
     }
 
