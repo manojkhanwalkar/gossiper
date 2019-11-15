@@ -27,7 +27,9 @@ public class ClientVerifier {
         AddUser addUser = new AddUser();
         addUser.setName("A");
 
-        connection.send(JSONUtil.toJSON(addUser),"create");
+        String response = connection.send(JSONUtil.toJSON(addUser),"create");
+
+        System.out.println(response);
     }
 
 

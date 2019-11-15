@@ -3,6 +3,8 @@ package manager;
 import data.Subject;
 import data.User;
 import graph.DAG;
+import persistence.DynamoDBManager;
+import persistence.UserRecord;
 
 import java.util.*;
 
@@ -18,6 +20,8 @@ public class UserManager {
     DAG follows = new DAG(100);
     DAG followsSubject = new DAG(100);
 
+    DynamoDBManager manager = new DynamoDBManager();
+
 
     public void addUser(User user)
     {
@@ -27,6 +31,11 @@ public class UserManager {
             int userNum = useridList.size();
             useridList.add(user.getId());
             userids.put(user.getId(), userNum);
+
+            UserRecord userRecord = new UserRecord();
+            userRecord.setUserId(user.getId());
+            userRecord.setName(user.getName());
+            manager.putUser(userRecord);
 
             // persist the user in database
         }
@@ -38,6 +47,9 @@ public class UserManager {
         {
             userids.remove(user.getId());
             useridList.remove(user.getId());
+
+            UserRecord userRecord = manager.getUser(user.getId());
+            manager.removeUser(userRecord);
 
             // delete user in database
 

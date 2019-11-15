@@ -4,6 +4,8 @@ import event.*;
 
 public class Dispatcher {
 
+    AddUserProcessor addUserProcessor = new AddUserProcessor();
+
     public void dispatch(AddPost event)
     {
 
@@ -11,7 +13,7 @@ public class Dispatcher {
 
     public void dispatch(AddUser event)
     {
-
+        addUserProcessor.process(event);
     }
 
     public void dispatch(DeletePost event)

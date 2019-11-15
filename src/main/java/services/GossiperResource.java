@@ -2,6 +2,7 @@ package services;
 
 import com.codahale.metrics.annotation.Timed;
 import event.AddUser;
+import processor.Dispatcher;
 
 
 import javax.ws.rs.GET;
@@ -15,6 +16,7 @@ import java.security.cert.X509Certificate;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
+
 @Path("/")
 @Produces(MediaType.APPLICATION_JSON)
 public class GossiperResource {
@@ -23,6 +25,8 @@ public class GossiperResource {
     private final AtomicLong counter;
 
 
+
+    Dispatcher dispatcher = new Dispatcher();
 
 
     public GossiperResource(String template, String defaultName) {
@@ -42,9 +46,11 @@ public class GossiperResource {
     public String exchange(AddUser request) {
 
 
+        dispatcher.dispatch(request);
+
        // return keyExchangeManager.processExchange(request);
 
-        return null;
+        return "User added";
 
 
     }
