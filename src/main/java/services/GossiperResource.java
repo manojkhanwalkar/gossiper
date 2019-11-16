@@ -3,6 +3,7 @@ package services;
 import com.codahale.metrics.annotation.Timed;
 import event.AddUser;
 import event.DeleteUser;
+import event.FollowUser;
 import processor.Dispatcher;
 
 
@@ -68,6 +69,23 @@ public class GossiperResource {
         // return keyExchangeManager.processExchange(request);
 
         return "User deleted";
+
+
+    }
+
+
+    @POST
+    @Timed
+    @Path("/follow")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String follow(FollowUser request) {
+
+
+        dispatcher.dispatch(request);
+
+        // return keyExchangeManager.processExchange(request);
+
+        return "Follower added";
 
 
     }

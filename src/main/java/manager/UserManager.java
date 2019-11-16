@@ -93,6 +93,15 @@ public class UserManager {
         follows.addEdge(selfIndex,userToFollowIndex);
         followers.addEdge(userToFollowIndex,selfIndex);
 
+        UserRecord userRecord = manager.getUser(self.getId());
+        userRecord.getFollows().add(userToFollow.getId());
+        manager.putUser(userRecord);
+
+         userRecord = manager.getUser(userToFollow.getId());
+        userRecord.getFollowedBy().add(self.getId());
+        manager.putUser(userRecord);
+
+
 
     }
 

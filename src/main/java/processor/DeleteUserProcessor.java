@@ -14,9 +14,8 @@ public class DeleteUserProcessor {
     {
         DeleteUser deleteUser = (DeleteUser)event;
 
-        User user = new User(deleteUser.getName());
 
-        userManager.deleteUser(user);
+        userManager.deleteUser(deleteUser.getUser());
 
     }
 }

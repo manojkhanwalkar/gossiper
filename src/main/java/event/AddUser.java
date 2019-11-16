@@ -1,22 +1,20 @@
 package event;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import data.User;
+
 public class AddUser implements Event {
 
-    String name;
+   @JsonProperty
+   User user;
 
-    public String getName() {
-        return name;
+    public User getUser() {
+        return user;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUser(User user) {
+        this.user = user;
     }
 
 
-    @Override
-    public String toString() {
-        return "AddUser{" +
-                "name='" + name + '\'' +
-                '}';
-    }
 }

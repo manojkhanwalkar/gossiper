@@ -1,5 +1,7 @@
 package data;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -8,8 +10,11 @@ import java.util.Objects;
 
 public class User {
 
-    final String id ;
-    final String name ;
+@JsonProperty
+     String id ;
+
+@JsonProperty
+     String name ;
 
    /* List<User> followers = new ArrayList<>();
     List<User> follows = new ArrayList<>();
@@ -23,6 +28,11 @@ public class User {
         return name;
     }
 
+    public User()
+    {
+
+    }
+
     public User(String name)
     {
         this.name = name;
@@ -32,6 +42,14 @@ public class User {
     private String generateId()
     {
         return String.valueOf(name.hashCode());
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

@@ -1,8 +1,11 @@
 package client;
 
+import data.User;
 import event.AddUser;
 
 import event.DeleteUser;
+import event.FollowUser;
+import processor.FollowUserProcessor;
 import util.*;
 
 import java.time.LocalDateTime;
@@ -23,10 +26,10 @@ public class ClientVerifier {
 
     }
 
-    public void addUser(String name ) throws Exception
+    public void addUser(User user ) throws Exception
     {
         AddUser addUser = new AddUser();
-        addUser.setName(name);
+        addUser.setUser(user);
 
         String response = connection.send(JSONUtil.toJSON(addUser),"create");
 
@@ -34,10 +37,19 @@ public class ClientVerifier {
     }
 
 
-    public void deleteUser(String name) throws Exception
+    public void followUser(FollowUser followUser ) throws Exception
+    {
+
+
+        String response = connection.send(JSONUtil.toJSON(followUser),"follow");
+
+        System.out.println(response);
+    }
+
+    public void deleteUser(User user) throws Exception
     {
         DeleteUser deleteUser = new DeleteUser();
-        deleteUser.setName(name);
+        deleteUser.setUser(user);
 
         String response = connection.send(JSONUtil.toJSON(deleteUser),"delete");
 
@@ -56,11 +68,24 @@ public class ClientVerifier {
 
         ClientVerifier verifier = new ClientVerifier();
 
-        for (int i=0;i<26;i++)
+      /*  for (int i=0;i<26;i++)
             verifier.addUser(String.valueOf('A'+i));
 
         for (int i=0;i<26;i++)
-            verifier.deleteUser(String.valueOf('A'+i));
+            verifier.deleteUser(String.valueOf('A'+i)); */
+
+      User user1 = new User("User1");
+      User user2 = new User("User2");
+
+
+        verifier.addUser(user1);
+        verifier.addUser(user2);
+
+        FollowUser followUser = new FollowUser();
+        followUser.setSelf(user1);
+        followUser.setTarget(user2);
+
+        verifier.followUser(followUser);
 
 
 

@@ -6,6 +6,7 @@ public class Dispatcher {
 
     AddUserProcessor addUserProcessor = new AddUserProcessor();
     DeleteUserProcessor deleteUserProcessor = new DeleteUserProcessor();
+    FollowUserProcessor followUserProcessor = new FollowUserProcessor();
 
     public void dispatch(AddPost event)
     {
@@ -29,12 +30,11 @@ public class Dispatcher {
 
     public void dispatch(FollowSubject event)
     {
-
     }
 
     public void dispatch(FollowUser event)
     {
-
+        followUserProcessor.process(event);
     }
 
     public void dispatch(UnFollowSubject event)

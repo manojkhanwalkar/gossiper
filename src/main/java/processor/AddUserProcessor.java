@@ -15,9 +15,9 @@ public class AddUserProcessor implements Processor{
     {
         AddUser addUser = (AddUser)event;
 
-        User user = new User(addUser.getName());
 
-        userManager.addUser(user);
+
+        userManager.addUser(addUser.getUser());
 
     }
 }

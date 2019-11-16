@@ -1,14 +1,17 @@
 package event;
 
+import data.User;
+
 public class DeleteUser implements Event {
 
-    String name;
 
-    public String getName() {
-        return name;
+    User user ;
+
+    public User getUser() {
+        return user;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUser(User user) {
+        this.user = user;
     }
 }
