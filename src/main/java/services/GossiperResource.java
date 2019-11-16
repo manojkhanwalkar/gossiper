@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import event.AddUser;
 import event.DeleteUser;
 import event.FollowUser;
+import event.UnFollowUser;
 import processor.Dispatcher;
 
 
@@ -89,6 +90,23 @@ public class GossiperResource {
 
 
     }
+
+    @POST
+    @Timed
+    @Path("/unfollow")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String unfollow(UnFollowUser request) {
+
+
+        dispatcher.dispatch(request);
+
+        // return keyExchangeManager.processExchange(request);
+
+        return "Follower removed";
+
+
+    }
+
 
 
  /*   @GET

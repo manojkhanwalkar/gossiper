@@ -5,6 +5,7 @@ import event.AddUser;
 
 import event.DeleteUser;
 import event.FollowUser;
+import event.UnFollowUser;
 import processor.FollowUserProcessor;
 import util.*;
 
@@ -46,6 +47,15 @@ public class ClientVerifier {
         System.out.println(response);
     }
 
+    public void unFollowUser(UnFollowUser followUser ) throws Exception
+    {
+
+
+        String response = connection.send(JSONUtil.toJSON(followUser),"unfollow");
+
+        System.out.println(response);
+    }
+
     public void deleteUser(User user) throws Exception
     {
         DeleteUser deleteUser = new DeleteUser();
@@ -74,8 +84,8 @@ public class ClientVerifier {
         for (int i=0;i<26;i++)
             verifier.deleteUser(String.valueOf('A'+i)); */
 
-      User user1 = new User("User1");
-      User user2 = new User("User2");
+      User user1 = new User("User11");
+      User user2 = new User("User21");
 
 
         verifier.addUser(user1);
@@ -86,6 +96,15 @@ public class ClientVerifier {
         followUser.setTarget(user2);
 
         verifier.followUser(followUser);
+
+
+        UnFollowUser unFollowUser = new UnFollowUser();
+        unFollowUser.setSelf(user1);
+        unFollowUser.setTarget(user2);
+
+        verifier.unFollowUser(unFollowUser);
+
+
 
 
 

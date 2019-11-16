@@ -44,6 +44,12 @@ public class DynamoDBManager {
         createTable("User",definitions,keySchemaElement);
     }
 
+
+    public void deleteUserTable()
+    {
+        deleteTable("User");
+    }
+
     public UserRecord getUser(String userId)
     {
         UserRecord userRecord = mapper.load(UserRecord.class, userId);
@@ -86,6 +92,18 @@ public class DynamoDBManager {
 
     }
 
+    private void deleteTable(String tableName)
+    {
+
+        final AmazonDynamoDB ddb = getHandle();
+
+
+        DeleteTableResult result = ddb.deleteTable(tableName);
+
+        System.out.println(result);
+
+    }
+
 
     private void createTable(String tableName , List<AttributeDefinition> definitions,KeySchemaElement keySchemaElement )
     {
@@ -121,6 +139,8 @@ public class DynamoDBManager {
     public static void main(String[] args) {
 
         DynamoDBManager manager = new DynamoDBManager();
+
+      //  manager.deleteUserTable();
 
        // manager.createUserTable();
 

@@ -52,7 +52,8 @@ public class DAG {
     public void removeEdge(int src, int tgt)
     {
         List<Integer> list = adjacencyList.get(src);
-        list.remove(tgt);
+
+        list.remove((Object)tgt);
     }
 
 

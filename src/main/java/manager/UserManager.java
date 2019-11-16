@@ -60,6 +60,10 @@ public class UserManager {
 
             // persist the user in database
         }
+        else
+        {
+            System.out.println("User already exists " + user);
+        }
     }
 
     public void deleteUser(User user)
@@ -94,12 +98,19 @@ public class UserManager {
         followers.addEdge(userToFollowIndex,selfIndex);
 
         UserRecord userRecord = manager.getUser(self.getId());
-        userRecord.getFollows().add(userToFollow.getId());
-        manager.putUser(userRecord);
+        if (!userRecord.getFollows().contains(userToFollow.getId()))
+        {
+            userRecord.getFollows().add(userToFollow.getId());
+            manager.putUser(userRecord);
 
-         userRecord = manager.getUser(userToFollow.getId());
-        userRecord.getFollowedBy().add(self.getId());
-        manager.putUser(userRecord);
+            userRecord = manager.getUser(userToFollow.getId());
+            userRecord.getFollowedBy().add(self.getId());
+            manager.putUser(userRecord);
+        }
+        else
+        {
+            System.out.println("Follower already exists " + self + "  " + userToFollow);
+        }
 
 
 
@@ -107,11 +118,25 @@ public class UserManager {
 
     public void deleteFollower(User self , User userToFollow)
     {
-        int selfIndex = userids.get(self.getId());
+        Integer selfIndex = userids.get(self.getId());
+        if (selfIndex==null)
+        {
+            System.out.println("Relationship not found " + self + "  "+ userToFollow);
+            return;
+        }
         int userToFollowIndex = userids.get(userToFollow.getId());
 
         follows.removeEdge(selfIndex,userToFollowIndex);
         followers.removeEdge(userToFollowIndex,selfIndex);
+
+        UserRecord userRecord = manager.getUser(self.getId());
+        userRecord.getFollows().remove(userToFollow.getId());
+        manager.putUser(userRecord);
+
+        userRecord = manager.getUser(userToFollow.getId());
+        userRecord.getFollowedBy().remove(self.getId());
+        manager.putUser(userRecord);
+
 
 
     }
