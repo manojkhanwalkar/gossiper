@@ -54,6 +54,13 @@ public class Connection {
     }
 
 
+    public String send(String action) throws Exception
+    {
+        return get(action);
+    }
+
+
+
 
 
 

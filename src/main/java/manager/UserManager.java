@@ -2,13 +2,16 @@ package manager;
 
 import data.Subject;
 import data.User;
+import data.Users;
 import graph.DAG;
 import persistence.DynamoDBManager;
 import persistence.UserRecord;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class UserManager {
+
 
 
 
@@ -42,6 +45,13 @@ public class UserManager {
     DAG followsSubject = new DAG(100);
 
     DynamoDBManager manager = new DynamoDBManager();
+
+
+    public Users getUsers() {
+        Users users = new Users();
+        users.setUsers(useridList.stream().collect(Collectors.toCollection(ArrayList::new)));
+        return users;
+    }
 
 
     public void addUser(User user)

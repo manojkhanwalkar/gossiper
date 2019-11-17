@@ -67,6 +67,15 @@ public class ClientVerifier {
     }
 
 
+    public void getUsers() throws Exception
+    {
+
+        String response = connection.send("users");
+
+        System.out.println(response);
+    }
+
+
 
 
 
@@ -84,12 +93,15 @@ public class ClientVerifier {
         for (int i=0;i<26;i++)
             verifier.deleteUser(String.valueOf('A'+i)); */
 
-      User user1 = new User("User11");
-      User user2 = new User("User21");
+      User user1 = new User("User111");
+      User user2 = new User("User211");
 
 
         verifier.addUser(user1);
         verifier.addUser(user2);
+
+
+        verifier.getUsers();
 
         FollowUser followUser = new FollowUser();
         followUser.setSelf(user1);
