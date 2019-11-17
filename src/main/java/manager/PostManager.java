@@ -1,4 +1,43 @@
 package manager;
 
+import data.Post;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 public class PostManager {
+
+    static class PostManagerHolder
+    {
+        static PostManager instance = new PostManager();
+    }
+
+
+    public static PostManager getInstance()
+    {
+        return PostManagerHolder.instance;
+    }
+
+    private PostManager()
+    {
+
+    }
+
+
+    //TODO - implement a TTL cache that cleans up older posts
+
+    Map<String,Post> posts = new HashMap<>();
+
+    public void addPost(Post post)
+    {
+        posts.put(post.getId(),post);
+    }
+
+    public Post getPost(String postId)
+    {
+        return posts.get(postId);
+    }
+
 }

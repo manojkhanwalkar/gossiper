@@ -1,9 +1,6 @@
 package manager;
 
-import data.Subject;
-import data.User;
-import data.UserInfo;
-import data.Users;
+import data.*;
 import graph.DAG;
 import persistence.DynamoDBManager;
 import persistence.UserRecord;
@@ -12,7 +9,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class UserManager {
-
 
 
 
@@ -46,6 +42,8 @@ public class UserManager {
     DAG followsSubject = new DAG(100);
 
     DynamoDBManager manager = new DynamoDBManager();
+
+    Map<Integer,Stack<Post>> userPosts = new HashMap<>();
 
 
     public Users getUsers() {
@@ -164,6 +162,27 @@ public class UserManager {
 
 
     }
+
+
+    public void queuePost(Post post) {
+
+        String posterUserId = post.getPoster().getId();
+
+        int index = userids.get(posterUserId);
+        followers.getEdges(index).stream().forEach(num->{
+
+            Stack<Post> posts = userPosts.get(num);
+            if (posts==null)
+            {
+                posts = new Stack<>();
+                userPosts.put(num,posts);
+            }
+
+            posts.add(post);
+        });
+
+    }
+
 
     public void addUserAsSubjectFollower(User self , Integer subjectIndex)
     {

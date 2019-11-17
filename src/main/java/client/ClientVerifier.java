@@ -1,5 +1,6 @@
 package client;
 
+import data.Post;
 import data.User;
 import data.Users;
 import event.*;
@@ -10,6 +11,7 @@ import util.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 public class ClientVerifier {
 
@@ -87,6 +89,16 @@ public class ClientVerifier {
     }
 
 
+    public void post(AddPost post) throws Exception
+    {
+
+        String response = connection.send(JSONUtil.toJSON(post),"post");
+
+        System.out.println(response);
+    }
+
+
+
 
 
 
@@ -138,7 +150,14 @@ public class ClientVerifier {
 
         verifier.unFollowUser(unFollowUser);
 
+        Post post = new Post();
+        post.setId(UUID.randomUUID().toString());
+        post.setMessage("New Post ");
+        post.setPoster(user2);
 
+        AddPost addPost = new AddPost();
+        addPost.setPost(post);
+        verifier.post(addPost);
 
 
 

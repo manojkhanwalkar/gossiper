@@ -134,6 +134,21 @@ public class GossiperResource {
 
     }
 
+    @POST
+    @Timed
+    @Path("/post")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String post(AddPost post) {
+
+
+         dispatcher.dispatch(post);
+
+         return "posted";
+
+
+
+    }
+
 
 
  /*   @GET

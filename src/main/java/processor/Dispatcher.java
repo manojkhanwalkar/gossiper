@@ -12,6 +12,7 @@ public class Dispatcher {
     UnFollowUserProcessor unFollowUserProcessor = new UnFollowUserProcessor();
     GetUsersProcessor getUsersProcessor = new GetUsersProcessor();
     GetUserProcessor getUserProcessor = new GetUserProcessor();
+    AddPostProcessor addPostProcessor = new AddPostProcessor();
 
 
     public Users dispatch()
@@ -21,7 +22,7 @@ public class Dispatcher {
 
     public void dispatch(AddPost event)
     {
-
+        addPostProcessor.process(event);
     }
 
     public UserInfo dispatch(GetUser event)

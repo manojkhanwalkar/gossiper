@@ -6,7 +6,7 @@ import java.util.UUID;
 public class Post {
 
 
-    String id = UUID.randomUUID().toString();
+    String id ;
     Subject subject;
     User poster;
     String message ;
@@ -37,6 +37,10 @@ public class Post {
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
