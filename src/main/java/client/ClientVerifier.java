@@ -97,6 +97,14 @@ public class ClientVerifier {
         System.out.println(response);
     }
 
+    public void post(DeletePost post) throws Exception
+    {
+
+        String response = connection.send(JSONUtil.toJSON(post),"deletepost");
+
+        System.out.println(response);
+    }
+
 
 
 
@@ -158,6 +166,10 @@ public class ClientVerifier {
         AddPost addPost = new AddPost();
         addPost.setPost(post);
         verifier.post(addPost);
+
+       /* DeletePost deletePost = new DeletePost();
+        deletePost.setPost(post);
+        verifier.post(deletePost);*/
 
 
 

@@ -13,7 +13,7 @@ public class Dispatcher {
     GetUsersProcessor getUsersProcessor = new GetUsersProcessor();
     GetUserProcessor getUserProcessor = new GetUserProcessor();
     AddPostProcessor addPostProcessor = new AddPostProcessor();
-
+    DeletePostProcessor deletePostProcessor = new DeletePostProcessor();
 
     public Users dispatch()
     {
@@ -37,7 +37,7 @@ public class Dispatcher {
 
     public void dispatch(DeletePost event)
     {
-
+        deletePostProcessor.process(event);
     }
 
     public void dispatch(DeleteUser event)

@@ -9,6 +9,8 @@ import java.util.Set;
 
 public class PostManager {
 
+
+
     static class PostManagerHolder
     {
         static PostManager instance = new PostManager();
@@ -38,6 +40,16 @@ public class PostManager {
     public Post getPost(String postId)
     {
         return posts.get(postId);
+    }
+
+    public void deletePost(Post post) {
+
+        posts.remove(post.getId());
+    }
+
+    public boolean isExists(String postId)
+    {
+        return posts.containsKey(postId);
     }
 
 }

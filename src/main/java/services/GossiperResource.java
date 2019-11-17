@@ -150,6 +150,22 @@ public class GossiperResource {
     }
 
 
+    @POST
+    @Timed
+    @Path("/deletepost")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String post(DeletePost post) {
+
+
+        dispatcher.dispatch(post);
+
+        return "post deleted";
+
+
+
+    }
+
+
 
  /*   @GET
     @Timed
