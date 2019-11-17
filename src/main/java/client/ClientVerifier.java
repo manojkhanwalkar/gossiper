@@ -1,11 +1,9 @@
 package client;
 
 import data.User;
-import event.AddUser;
+import data.Users;
+import event.*;
 
-import event.DeleteUser;
-import event.FollowUser;
-import event.UnFollowUser;
 import processor.FollowUserProcessor;
 import util.*;
 
@@ -67,10 +65,23 @@ public class ClientVerifier {
     }
 
 
-    public void getUsers() throws Exception
+    public Users getUsers() throws Exception
     {
 
         String response = connection.send("users");
+
+        Users users = (Users)JSONUtil.fromJSON(response,Users.class);
+
+        System.out.println(response);
+
+        return users;
+    }
+
+
+    public void getUser(GetUser user) throws Exception
+    {
+
+        String response = connection.send(JSONUtil.toJSON(user),"user");
 
         System.out.println(response);
     }
@@ -93,15 +104,26 @@ public class ClientVerifier {
         for (int i=0;i<26;i++)
             verifier.deleteUser(String.valueOf('A'+i)); */
 
-      User user1 = new User("User111");
-      User user2 = new User("User211");
+      User user1 = new User("User1191");
+      User user2 = new User("User2191");
 
 
         verifier.addUser(user1);
         verifier.addUser(user2);
 
 
-        verifier.getUsers();
+        Users users = verifier.getUsers();
+        users.getUsers().stream().forEach(u->{
+
+            GetUser getUser = new GetUser();
+            getUser.setUserId(u);
+            try {
+                verifier.getUser(getUser);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
 
         FollowUser followUser = new FollowUser();
         followUser.setSelf(user1);

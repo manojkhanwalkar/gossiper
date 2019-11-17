@@ -1,11 +1,9 @@
 package services;
 
 import com.codahale.metrics.annotation.Timed;
+import data.UserInfo;
 import data.Users;
-import event.AddUser;
-import event.DeleteUser;
-import event.FollowUser;
-import event.UnFollowUser;
+import event.*;
 import processor.Dispatcher;
 
 
@@ -117,6 +115,20 @@ public class GossiperResource {
 
         return dispatcher.dispatch();
 
+
+
+
+    }
+
+
+    @POST
+    @Timed
+    @Path("/user")
+    @Produces(MediaType.APPLICATION_JSON)
+    public UserInfo user(GetUser user) {
+
+
+        return dispatcher.dispatch(user);
 
 
 

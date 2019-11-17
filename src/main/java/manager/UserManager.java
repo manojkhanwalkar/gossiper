@@ -2,6 +2,7 @@ package manager;
 
 import data.Subject;
 import data.User;
+import data.UserInfo;
 import data.Users;
 import graph.DAG;
 import persistence.DynamoDBManager;
@@ -74,6 +75,19 @@ public class UserManager {
         {
             System.out.println("User already exists " + user);
         }
+    }
+
+    public UserInfo getUser(String userId) {
+
+        UserRecord userRecord = manager.getUser(userId);
+        UserInfo userInfo = new UserInfo();
+        userInfo.setFollowedBy(userRecord.getFollowedBy());
+        userInfo.setFollows(userRecord.getFollows());
+        userInfo.setName(userRecord.getName());
+        userInfo.setUserId(userRecord.getUserId());
+
+        return userInfo;
+
     }
 
     public void deleteUser(User user)

@@ -1,5 +1,6 @@
 package processor;
 
+import data.UserInfo;
 import data.Users;
 import event.*;
 
@@ -10,6 +11,7 @@ public class Dispatcher {
     FollowUserProcessor followUserProcessor = new FollowUserProcessor();
     UnFollowUserProcessor unFollowUserProcessor = new UnFollowUserProcessor();
     GetUsersProcessor getUsersProcessor = new GetUsersProcessor();
+    GetUserProcessor getUserProcessor = new GetUserProcessor();
 
 
     public Users dispatch()
@@ -20,6 +22,11 @@ public class Dispatcher {
     public void dispatch(AddPost event)
     {
 
+    }
+
+    public UserInfo dispatch(GetUser event)
+    {
+        return getUserProcessor.process(event);
     }
 
     public void dispatch(AddUser event)
