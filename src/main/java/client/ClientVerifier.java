@@ -106,6 +106,16 @@ public class ClientVerifier {
     }
 
 
+    public void retrieve(RetrievePost post) throws Exception
+    {
+
+        String response = connection.send(JSONUtil.toJSON(post),"retrieve");
+
+        System.out.println(response);
+    }
+
+
+
 
 
 
@@ -152,20 +162,28 @@ public class ClientVerifier {
         verifier.followUser(followUser);
 
 
-        UnFollowUser unFollowUser = new UnFollowUser();
+    /*    UnFollowUser unFollowUser = new UnFollowUser();
         unFollowUser.setSelf(user1);
         unFollowUser.setTarget(user2);
 
-        verifier.unFollowUser(unFollowUser);
+        verifier.unFollowUser(unFollowUser); */
 
-        Post post = new Post();
-        post.setId(UUID.randomUUID().toString());
-        post.setMessage("New Post ");
-        post.setPoster(user2);
 
-        AddPost addPost = new AddPost();
-        addPost.setPost(post);
-        verifier.post(addPost);
+        for (int i=0;i<10;i++) {
+            Post post = new Post();
+            post.setId(UUID.randomUUID().toString());
+            post.setMessage("New Post " + System.nanoTime());
+            post.setPoster(user2);
+
+            AddPost addPost = new AddPost();
+            addPost.setPost(post);
+            verifier.post(addPost);
+        }
+
+        RetrievePost retrievePost = new RetrievePost();
+        retrievePost.setUser(user1);
+        verifier.retrieve(retrievePost);
+
 
        /* DeletePost deletePost = new DeletePost();
         deletePost.setPost(post);

@@ -30,7 +30,7 @@ public class UserManager {
 
 
 
-
+PostManager postManager = PostManager.getInstance();
 
 
     Map<String,Integer> userids = new HashMap<>();
@@ -181,6 +181,22 @@ public class UserManager {
             posts.add(post);
         });
 
+    }
+
+
+    public Posts getPostsForUser(String id) {
+
+        int index = userids.get(id);
+        Stack<Post> postStack = userPosts.get(index);
+
+        Posts posts = new Posts();
+
+        if (postStack!=null) {
+
+            posts.setPosts(postStack.stream().filter(p -> postManager.isExists(p.getId())).collect(Collectors.toCollection(ArrayList::new)));
+
+        }
+        return posts;
     }
 
 
