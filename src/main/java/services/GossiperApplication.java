@@ -4,6 +4,8 @@ package services;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import manager.UserManager;
+import persistence.DynamoDBManager;
 
 
 public class GossiperApplication extends Application<GossiperConfiguration> {
@@ -33,6 +35,12 @@ public class GossiperApplication extends Application<GossiperConfiguration> {
         );
    //     DiscoveryLifeCycle myManagedObject = new DiscoveryLifeCycle(Constants.BureauServiceUrl,Constants.BureauServiceType, Constants.BureauServiceHealthUrl);
      //   environment.lifecycle().manage(myManagedObject);
+
+
+        DynamoDBManager dynamoDBManager = new DynamoDBManager();
+        UserManager userManager = UserManager.getInstance();
+        dynamoDBManager.recover(userManager);
+
 
         environment.jersey().register(resource);
        // environment.healthChecks().register("APIHealthCheck", new AppHealthCheck());

@@ -7,6 +7,8 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.*;
+import data.User;
+import manager.UserManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +77,30 @@ public class DynamoDBManager {
     public void printUsers()
     {
             printAllRecords(UserRecord.class);
+    }
+
+
+    public void recover(UserManager userManager)
+    {
+
+        final AmazonDynamoDB ddb = getHandle();
+        DynamoDBMapper mapper = new DynamoDBMapper(ddb);
+
+        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
+        var scanResult = mapper.scan(UserRecord.class, scanExpression);
+
+        scanResult.stream().forEach(r->{
+                User user = new User(r.getName());
+                //user.setName(r.getName());
+                userManager.recoverUser(user);});
+
+
+        scanResult.stream().forEach(r->{
+
+
+            userManager.recoverFollowersAndFollows(r.getUserId(),r.getFollowedBy(),r.getFollows());});
+
+
     }
 
 

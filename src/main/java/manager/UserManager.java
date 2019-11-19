@@ -52,6 +52,18 @@ PostManager postManager = PostManager.getInstance();
         return users;
     }
 
+    public void recoverUser(User user)
+    {
+        if (!userids.containsKey(user.getId()))
+        {
+
+            int userNum = useridList.size();
+            useridList.add(user.getId());
+            userids.put(user.getId(), userNum);
+
+        }
+    }
+
 
     public void addUser(User user)
     {
@@ -109,6 +121,30 @@ PostManager postManager = PostManager.getInstance();
         {
             System.out.println("User not found " + user);
         }
+    }
+
+
+    public void recoverFollowersAndFollows(String selfId , List<String> followerIds, List<String> followsIds)
+    {
+        int selfIndex = userids.get(selfId);
+        followerIds.stream().forEach(follower->{
+            int other = userids.get(follower);
+            followers.addEdge(other,selfIndex);
+
+        });
+
+        followsIds.stream().forEach(follow->{
+
+            int other = userids.get(follow);
+
+            follows.addEdge(selfIndex,other);
+
+        });
+
+
+
+
+
     }
 
     public void addFollower(User self , User userToFollow)
