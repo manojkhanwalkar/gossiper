@@ -212,6 +212,9 @@ public class ClientVerifier {
         Subject subject1 = new Subject("technology");
         verifier.addSubject(subject1);
 
+     /*   Subject subject2 = new Subject("politics");
+        verifier.deleteSubject(subject2);
+*/
 
 
 

@@ -18,6 +18,7 @@ public class SubjectRecord {
 
     private List<String> followedBy = new ArrayList<>();
 
+    @DynamoDBHashKey(attributeName = "SubjectId")
 
     public String getSubjectId() {
         return subjectId;
@@ -27,7 +28,6 @@ public class SubjectRecord {
         this.subjectId = subjectId;
     }
 
-    @DynamoDBHashKey(attributeName = "SubjectId")
 
 
 

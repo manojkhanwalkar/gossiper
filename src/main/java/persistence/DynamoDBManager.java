@@ -212,7 +212,7 @@ public class DynamoDBManager {
 
         DynamoDBManager manager = new DynamoDBManager();
 
-        manager.createSubjectTable();
+      //  manager.createSubjectTable();
 
       //  manager.deleteUserTable();
 
