@@ -3,6 +3,8 @@ package manager;
 import data.Subject;
 import data.User;
 import graph.DAG;
+import persistence.DynamoDBManager;
+import persistence.SubjectRecord;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,11 +13,29 @@ import java.util.Map;
 
 public class SubjectManager {
 
+    static class SubjectManagerHolder
+    {
+        static SubjectManager instance = new SubjectManager();
+    }
+
+
+    public static SubjectManager getInstance()
+    {
+        return SubjectManager.SubjectManagerHolder.instance;
+    }
+
+    private SubjectManager()
+    {
+
+    }
+
     Map<String,Integer> subjectids = new HashMap<>();
 
     List<String> subjectidList = new ArrayList<>();
 
     DAG followers = new DAG(100);
+
+    DynamoDBManager manager = new DynamoDBManager();
 
 
     public void addSubject(Subject subject)
@@ -26,6 +46,15 @@ public class SubjectManager {
             int subjectNum = subjectidList.size();
             subjectidList.add(subject.getId());
             subjectids.put(subject.getId(), subjectNum);
+
+
+
+              SubjectRecord subjectRecord = new SubjectRecord();
+              subjectRecord.setSubjectId(subject.getId());
+              subjectRecord.setName(subject.getName());
+
+            manager.putSubject(subjectRecord);
+
 
             // persist the subject in database
         }
@@ -40,11 +69,31 @@ public class SubjectManager {
 
             // delete user in database
 
+            SubjectRecord subjectRecord = manager.getSubject(subject.getId());
+            manager.removeSubject(subjectRecord);
+
+
             // let the user stay in the DAG as the next restart will remove it .
 
 
         }
     }
+
+    //TODO - implement getsubject
+ /*   public UserInfo getUser(String userId) {
+
+        UserRecord userRecord = manager.getUser(userId);
+        UserInfo userInfo = new UserInfo();
+        userInfo.setFollowedBy(userRecord.getFollowedBy());
+        userInfo.setFollows(userRecord.getFollows());
+        userInfo.setName(userRecord.getName());
+        userInfo.setUserId(userRecord.getUserId());
+
+        return userInfo;
+
+    } */
+
+
 
     public void addFollower(int selfIndex , Subject subjectToFollow)
     {

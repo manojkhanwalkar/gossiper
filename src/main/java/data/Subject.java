@@ -6,10 +6,15 @@ import java.util.Objects;
 
 public class Subject {
 
-    final String id ;
-    final String name ;
+     String id ;
+     String name ;
 
-    List<User> followers = new ArrayList<>();
+    //List<User> followers = new ArrayList<>();
+
+    public Subject()
+    {
+
+    }
 
     public Subject(String name)
     {
@@ -18,6 +23,17 @@ public class Subject {
     }
 
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     private String generateId()
     {

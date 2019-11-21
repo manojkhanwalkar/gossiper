@@ -1,11 +1,12 @@
 package client;
 
 import data.Post;
+import data.Subject;
 import data.User;
 import data.Users;
 import event.*;
 
-import processor.FollowUserProcessor;
+
 import util.*;
 
 import java.time.LocalDateTime;
@@ -33,6 +34,16 @@ public class ClientVerifier {
         addUser.setUser(user);
 
         String response = connection.send(JSONUtil.toJSON(addUser),"create");
+
+        System.out.println(response);
+    }
+
+    public void addSubject(Subject subject ) throws Exception
+    {
+        AddSubject addSubject = new AddSubject();
+        addSubject.setSubject(subject);
+
+        String response = connection.send(JSONUtil.toJSON(addSubject),"createSubject");
 
         System.out.println(response);
     }
@@ -66,6 +77,16 @@ public class ClientVerifier {
         System.out.println(response);
     }
 
+
+    public void deleteSubject(Subject subject) throws Exception
+    {
+        DeleteSubject deleteSubject = new DeleteSubject();
+        deleteSubject.setSubject(subject);
+
+        String response = connection.send(JSONUtil.toJSON(deleteSubject),"deleteSubject");
+
+        System.out.println(response);
+    }
 
     public Users getUsers() throws Exception
     {
@@ -183,6 +204,15 @@ public class ClientVerifier {
         RetrievePost retrievePost = new RetrievePost();
         retrievePost.setUser(user1);
         verifier.retrieve(retrievePost);
+
+
+        Subject subject = new Subject("politics");
+        verifier.addSubject(subject);
+
+        Subject subject1 = new Subject("technology");
+        verifier.addSubject(subject1);
+
+
 
 
        /* DeletePost deletePost = new DeletePost();

@@ -1,57 +1,62 @@
 package processor;
 
-import data.Posts;
-import data.UserInfo;
-import data.Users;
+import data.*;
 import event.*;
+import manager.PostManager;
+import manager.SubjectManager;
+import manager.UserManager;
 
 public class Dispatcher {
 
-    AddUserProcessor addUserProcessor = new AddUserProcessor();
-    DeleteUserProcessor deleteUserProcessor = new DeleteUserProcessor();
-    FollowUserProcessor followUserProcessor = new FollowUserProcessor();
-    UnFollowUserProcessor unFollowUserProcessor = new UnFollowUserProcessor();
-    GetUsersProcessor getUsersProcessor = new GetUsersProcessor();
-    GetUserProcessor getUserProcessor = new GetUserProcessor();
-    AddPostProcessor addPostProcessor = new AddPostProcessor();
-    DeletePostProcessor deletePostProcessor = new DeletePostProcessor();
-    RetrievePostProcessor retrievePostProcessor = new RetrievePostProcessor();
 
+    UserManager userManager = UserManager.getInstance();
 
+    PostManager postManager = PostManager.getInstance();
+
+    SubjectManager subjectManager = SubjectManager.getInstance();
 
     public Users dispatch()
     {
-        return getUsersProcessor.process();
+
+        return userManager.getUsers();
     }
 
     public void dispatch(AddPost event)
     {
-        addPostProcessor.process(event);
+
+        postManager.addPost(event.getPost());
+
+        userManager.queuePost(event.getPost());
     }
 
     public Posts dispatch(RetrievePost event)
     {
-        return retrievePostProcessor.process(event);
+
+        return userManager.getPostsForUser(event.getUser().getId());
+
     }
 
     public UserInfo dispatch(GetUser event)
     {
-        return getUserProcessor.process(event);
+        return  userManager.getUser(event.getUserId());
     }
 
     public void dispatch(AddUser event)
     {
-        addUserProcessor.process(event);
+        userManager.addUser(event.getUser());
     }
 
     public void dispatch(DeletePost event)
     {
-        deletePostProcessor.process(event);
+
+        postManager.deletePost(event.getPost());
+
     }
 
     public void dispatch(DeleteUser event)
     {
-        deleteUserProcessor.process(event);
+
+        userManager.deleteUser(event.getUser());
     }
 
     public void dispatch(FollowSubject event)
@@ -60,7 +65,9 @@ public class Dispatcher {
 
     public void dispatch(FollowUser event)
     {
-        followUserProcessor.process(event);
+
+        userManager.addFollower(event.getSelf(),event.getTarget());
+
     }
 
     public void dispatch(UnFollowSubject event)
@@ -70,7 +77,19 @@ public class Dispatcher {
 
     public void dispatch(UnFollowUser event)
     {
-        unFollowUserProcessor.process(event);
+        userManager.deleteFollower(event.getSelf(),event.getTarget());
+    }
+
+
+    public void dispatch(AddSubject event)
+    {
+        subjectManager.addSubject(event.getSubject());
+    }
+
+
+    public void dispatch(DeleteSubject event)
+    {
+        subjectManager.deleteSubject(event.getSubject());
     }
 
 

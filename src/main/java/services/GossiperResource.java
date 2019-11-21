@@ -60,6 +60,39 @@ public class GossiperResource {
 
     @POST
     @Timed
+    @Path("/createSubject")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String createSubject(AddSubject request) {
+
+
+        dispatcher.dispatch(request);
+
+        // return keyExchangeManager.processExchange(request);
+
+        return "Subject added";
+
+
+    }
+
+    @POST
+    @Timed
+    @Path("/deleteSubject")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String deleteSubject(DeleteSubject request) {
+
+
+        dispatcher.dispatch(request);
+
+        // return keyExchangeManager.processExchange(request);
+
+        return "Subject  deleted";
+
+
+    }
+
+
+    @POST
+    @Timed
     @Path("/delete")
     @Produces(MediaType.APPLICATION_JSON)
     public String deleteUser(DeleteUser request) {

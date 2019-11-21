@@ -7,6 +7,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.*;
+import data.Subject;
 import data.User;
 import manager.UserManager;
 
@@ -47,15 +48,39 @@ public class DynamoDBManager {
     }
 
 
+    public void createSubjectTable() {
+
+        List<AttributeDefinition> definitions = new ArrayList<>();
+        definitions.add(new AttributeDefinition(
+                "SubjectId", ScalarAttributeType.S));
+
+        KeySchemaElement keySchemaElement = new KeySchemaElement("SubjectId", KeyType.HASH);
+
+        createTable("Subject",definitions,keySchemaElement);
+    }
+
+
     public void deleteUserTable()
     {
         deleteTable("User");
     }
 
+    public void deleteSubjectTable()
+    {
+        deleteTable("Subject");
+    }
+
+
     public UserRecord getUser(String userId)
     {
         UserRecord userRecord = mapper.load(UserRecord.class, userId);
         return userRecord;
+    }
+
+    public SubjectRecord getSubject(String subjectId)
+    {
+        SubjectRecord subjectRecord = mapper.load(SubjectRecord.class, subjectId);
+        return subjectRecord;
     }
 
 
@@ -66,9 +91,20 @@ public class DynamoDBManager {
 
     }
 
+    public void putSubject(SubjectRecord subjectRecord)
+    {
+        mapper.save(subjectRecord);
+
+    }
+
     public void removeUser(UserRecord userRecord)
     {
         mapper.delete(userRecord);
+    }
+
+    public void removeSubject(SubjectRecord subjectRecord)
+    {
+        mapper.delete(subjectRecord);
     }
 
 
@@ -78,6 +114,14 @@ public class DynamoDBManager {
     {
             printAllRecords(UserRecord.class);
     }
+
+
+    public void printSubjects()
+    {
+        printAllRecords(SubjectRecord.class);
+    }
+
+
 
 
     public void recover(UserManager userManager)
@@ -99,6 +143,8 @@ public class DynamoDBManager {
 
 
             userManager.recoverFollowersAndFollows(r.getUserId(),r.getFollowedBy(),r.getFollows());});
+
+        //TODO - recover user -> subject DAG
 
 
     }
@@ -166,11 +212,13 @@ public class DynamoDBManager {
 
         DynamoDBManager manager = new DynamoDBManager();
 
+        manager.createSubjectTable();
+
       //  manager.deleteUserTable();
 
        // manager.createUserTable();
 
-        manager.printUsers();
+        manager.printSubjects();
 
     }
 }
