@@ -2,6 +2,7 @@ package services;
 
 import com.codahale.metrics.annotation.Timed;
 import data.Posts;
+import data.Subjects;
 import data.UserInfo;
 import data.Users;
 import event.*;
@@ -148,6 +149,20 @@ public class GossiperResource {
 
 
         return dispatcher.dispatch();
+
+
+
+
+    }
+
+    @GET
+    @Timed
+    @Path("/subjects")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Subjects subjects() {
+
+
+        return dispatcher.retrieveSubjects();
 
 
 

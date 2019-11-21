@@ -21,6 +21,13 @@ public class Dispatcher {
         return userManager.getUsers();
     }
 
+
+    public Subjects retrieveSubjects()
+    {
+
+        return subjectManager.getSubjects();
+    }
+
     public void dispatch(AddPost event)
     {
 

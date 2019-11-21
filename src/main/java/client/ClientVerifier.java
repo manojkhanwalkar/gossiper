@@ -1,9 +1,6 @@
 package client;
 
-import data.Post;
-import data.Subject;
-import data.User;
-import data.Users;
+import data.*;
 import event.*;
 
 
@@ -99,6 +96,22 @@ public class ClientVerifier {
 
         return users;
     }
+
+
+    public Subjects getSubjects() throws Exception
+    {
+
+        String response = connection.send("subjects");
+
+        Subjects subjects = (Subjects)JSONUtil.fromJSON(response,Subjects.class);
+
+        System.out.println(response);
+
+        return subjects;
+    }
+
+
+
 
 
     public void getUser(GetUser user) throws Exception
@@ -221,6 +234,10 @@ public class ClientVerifier {
        /* DeletePost deletePost = new DeletePost();
         deletePost.setPost(post);
         verifier.post(deletePost);*/
+
+        Subjects subjects = verifier.getSubjects();
+
+        System.out.println(subjects);
 
 
 

@@ -1,6 +1,7 @@
 package manager;
 
 import data.Subject;
+import data.Subjects;
 import data.User;
 import graph.DAG;
 import persistence.DynamoDBManager;
@@ -104,6 +105,14 @@ public class SubjectManager {
         followers.addEdge(subjectToFollowIndex,selfIndex);
 
 
+    }
+
+
+    public Subjects getSubjects()
+    {
+        Subjects subjects = new Subjects();
+        subjects.setSubjects((ArrayList)subjectidList);
+        return subjects;
     }
 
 
