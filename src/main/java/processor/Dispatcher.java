@@ -48,6 +48,13 @@ public class Dispatcher {
         return  userManager.getUser(event.getUserId());
     }
 
+
+
+    public SubjectInfo dispatch(GetSubject subject)
+    {
+        return subjectManager.getSubject(subject.getSubjectId());
+    }
+
     public void dispatch(AddUser event)
     {
         userManager.addUser(event.getUser());

@@ -1,6 +1,7 @@
 package manager;
 
 import data.Subject;
+import data.SubjectInfo;
 import data.Subjects;
 import data.User;
 import graph.DAG;
@@ -80,19 +81,23 @@ public class SubjectManager {
         }
     }
 
-    //TODO - implement getsubject
- /*   public UserInfo getUser(String userId) {
 
-        UserRecord userRecord = manager.getUser(userId);
-        UserInfo userInfo = new UserInfo();
-        userInfo.setFollowedBy(userRecord.getFollowedBy());
-        userInfo.setFollows(userRecord.getFollows());
-        userInfo.setName(userRecord.getName());
-        userInfo.setUserId(userRecord.getUserId());
+   public SubjectInfo getSubject(String subjectId) {
 
-        return userInfo;
+        SubjectRecord subjectRecord = manager.getSubject(subjectId);
 
-    } */
+        SubjectInfo subjectInfo = new SubjectInfo();
+
+        subjectInfo.setFollowedBy(subjectRecord.getFollowedBy());
+        subjectInfo.setName(subjectRecord.getName());
+
+        subjectInfo.setSubjectId(subjectRecord.getSubjectId());
+
+
+
+        return subjectInfo;
+
+    }
 
 
 

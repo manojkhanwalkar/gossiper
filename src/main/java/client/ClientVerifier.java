@@ -35,14 +35,18 @@ public class ClientVerifier {
         System.out.println(response);
     }
 
-    public void addSubject(Subject subject ) throws Exception
+    public void addSubject(Subject subject )
     {
-        AddSubject addSubject = new AddSubject();
-        addSubject.setSubject(subject);
+        try {
+            AddSubject addSubject = new AddSubject();
+            addSubject.setSubject(subject);
 
-        String response = connection.send(JSONUtil.toJSON(addSubject),"createSubject");
+            String response = connection.send(JSONUtil.toJSON(addSubject),"createSubject");
 
-        System.out.println(response);
+            System.out.println(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -120,6 +124,21 @@ public class ClientVerifier {
         String response = connection.send(JSONUtil.toJSON(user),"user");
 
         System.out.println(response);
+    }
+
+
+    public void getSubject(String subjectId)
+    {
+        try {
+            GetSubject getSubject = new GetSubject();
+            getSubject.setSubjectId(subjectId);
+
+            String response = connection.send(JSONUtil.toJSON(getSubject),"subject");
+
+            System.out.println(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -218,12 +237,13 @@ public class ClientVerifier {
         retrievePost.setUser(user1);
         verifier.retrieve(retrievePost);
 
+        List.of("politics","technology","health").stream().forEach(s->{
 
-        Subject subject = new Subject("politics");
-        verifier.addSubject(subject);
+            Subject subject = new Subject(s);
+            verifier.addSubject(subject);
 
-        Subject subject1 = new Subject("technology");
-        verifier.addSubject(subject1);
+        });
+
 
      /*   Subject subject2 = new Subject("politics");
         verifier.deleteSubject(subject2);
@@ -237,7 +257,14 @@ public class ClientVerifier {
 
         Subjects subjects = verifier.getSubjects();
 
-        System.out.println(subjects);
+        subjects.getSubjects().stream().forEach(s->{
+
+            verifier.getSubject(s);
+
+        });
+
+
+        //System.out.println(subjects);
 
 
 
