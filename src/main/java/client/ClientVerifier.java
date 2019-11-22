@@ -184,6 +184,20 @@ public class ClientVerifier {
         }
     }
 
+    private void UnFollowSubject(User user1, Subject subject) {
+        try {
+            UnFollowSubject unFollowSubject = new UnFollowSubject();
+            unFollowSubject.setSubject(subject);
+            unFollowSubject.setUser(user1);
+
+            String response = connection.send(JSONUtil.toJSON(unFollowSubject),"unfollowsubject");
+
+            System.out.println(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 
@@ -281,6 +295,8 @@ public class ClientVerifier {
 
 
         verifier.followSubject(user1,subject);
+
+        verifier.UnFollowSubject(user1,subject);
 
 
 
