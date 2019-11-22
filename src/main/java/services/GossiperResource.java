@@ -122,6 +122,23 @@ public class GossiperResource {
 
     }
 
+
+    @POST
+    @Timed
+    @Path("/followsubject")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String followSubject(FollowSubject request) {
+
+
+        dispatcher.dispatch(request);
+
+        // return keyExchangeManager.processExchange(request);
+
+        return "Follower added";
+
+
+    }
+
     @POST
     @Timed
     @Path("/unfollow")

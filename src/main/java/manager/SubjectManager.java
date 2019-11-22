@@ -82,6 +82,12 @@ public class SubjectManager {
     }
 
 
+    public Integer getSubjectIndex(String subjectId)
+    {
+        return subjectids.get(subjectId);
+    }
+
+
    public SubjectInfo getSubject(String subjectId) {
 
         SubjectRecord subjectRecord = manager.getSubject(subjectId);
@@ -101,13 +107,36 @@ public class SubjectManager {
 
 
 
-    public void addFollower(int selfIndex , Subject subjectToFollow)
+    public void addFollower(int selfIndex , Subject subjectToFollow, User user)
     {
 
         int subjectToFollowIndex = subjectids.get(subjectToFollow.getId());
 
 
         followers.addEdge(subjectToFollowIndex,selfIndex);
+
+        SubjectRecord subjectRecord = manager.getSubject(subjectToFollow.getId());
+        if (!subjectRecord.getFollowedBy().contains(user.getId()))
+        {
+            subjectRecord.getFollowedBy().add(user.getId());
+            manager.putSubject(subjectRecord);
+        }
+
+
+    }
+
+    public void deleteFollower(int selfIndex , Subject subjectToFollow, User user)
+    {
+
+        int subjectToFollowIndex = subjectids.get(subjectToFollow.getId());
+
+
+        followers.removeEdge(subjectToFollowIndex,selfIndex);
+
+        SubjectRecord subjectRecord = manager.getSubject(subjectToFollow.getId());
+
+            subjectRecord.getFollowedBy().remove(user.getId());
+            manager.putSubject(subjectRecord);
 
 
     }

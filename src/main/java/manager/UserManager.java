@@ -12,6 +12,7 @@ public class UserManager {
 
 
 
+
     static class UserManagerHolder
     {
         static UserManager instance = new UserManager();
@@ -44,6 +45,11 @@ PostManager postManager = PostManager.getInstance();
     DynamoDBManager manager = new DynamoDBManager();
 
     Map<Integer,Stack<Post>> userPosts = new HashMap<>();
+
+    public Integer getUserIndex(User user) {
+
+        return userids.get(user.getId());
+    }
 
 
     public Users getUsers() {
@@ -236,17 +242,29 @@ PostManager postManager = PostManager.getInstance();
     }
 
 
-    public void addUserAsSubjectFollower(User self , Integer subjectIndex)
+    public void addUserAsSubjectFollower(User self , Integer subjectIndex, Subject subject)
     {
         int selfIndex = userids.get(self.getId());
         followsSubject.addEdge(selfIndex,subjectIndex);
+        UserRecord userRecord = manager.getUser(self.getId());
+        if (!userRecord.getFollowsSubject().contains(self.getId()))
+        {
+            userRecord.getFollowsSubject().add(subject.getId());
+            manager.putUser(userRecord);
+        }
+
 
     }
 
-    public void deleteUserAsSubjectFollower(User self , Integer subjectIndex)
+    public void deleteUserAsSubjectFollower(User self , Integer subjectIndex, Subject subject)
     {
         int selfIndex = userids.get(self.getId());
         followsSubject.removeEdge(selfIndex,subjectIndex);
+
+        UserRecord userRecord = manager.getUser(self.getId());
+        userRecord.getFollowsSubject().remove(subject.getId());
+        manager.putUser(userRecord);
+
 
     }
 

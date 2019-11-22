@@ -170,7 +170,19 @@ public class ClientVerifier {
 
 
 
+    private void followSubject(User user1, Subject subject) {
+        try {
+            FollowSubject followSubject = new FollowSubject();
+            followSubject.setSubject(subject);
+            followSubject.setUser(user1);
 
+            String response = connection.send(JSONUtil.toJSON(followSubject),"followsubject");
+
+            System.out.println(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
@@ -265,13 +277,14 @@ public class ClientVerifier {
 
 
         //System.out.println(subjects);
+        Subject subject = new Subject("politics");
+
+
+        verifier.followSubject(user1,subject);
 
 
 
     }
-
-
-
 
 
 
