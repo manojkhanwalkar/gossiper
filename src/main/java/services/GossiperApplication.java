@@ -38,8 +38,8 @@ public class GossiperApplication extends Application<GossiperConfiguration> {
 
 
         DynamoDBManager dynamoDBManager = new DynamoDBManager();
-        UserManager userManager = UserManager.getInstance();
-        dynamoDBManager.recover(userManager);
+
+        dynamoDBManager.recover();
 
 
         environment.jersey().register(resource);

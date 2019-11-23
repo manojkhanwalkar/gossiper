@@ -3,6 +3,7 @@ package manager;
 import data.*;
 import graph.DAG;
 import persistence.DynamoDBManager;
+import persistence.SubjectRecord;
 import persistence.UserRecord;
 
 import java.util.*;
@@ -50,6 +51,12 @@ PostManager postManager = PostManager.getInstance();
 
         return userids.get(user.getId());
     }
+
+    public Integer getUserIndex(String userId) {
+
+        return userids.get(userId);
+    }
+
 
 
     public Users getUsers() {
@@ -111,13 +118,23 @@ PostManager postManager = PostManager.getInstance();
 
         if (userids.containsKey(user.getId()))
         {
+            List<Integer> subjectIndices = followsSubject.getEdges(userids.get(user.getId()));
             userids.remove(user.getId());
             useridList.remove(user.getId());
 
             UserRecord userRecord = manager.getUser(user.getId());
             manager.removeUser(userRecord);
 
-            // delete user in database
+            subjectIndices.stream().forEach(i->{
+
+                SubjectManager subjectManager = SubjectManager.getInstance();
+                String subjectId = subjectManager.subjectidList.get(i);
+                SubjectRecord subjectRecord = manager.getSubject(subjectId);
+                subjectRecord.getFollowedBy().remove(user.getId());
+                manager.putSubject(subjectRecord);
+            });
+
+
 
             // let the user stay in the DAG as the next restart will remove it .
 
@@ -130,7 +147,7 @@ PostManager postManager = PostManager.getInstance();
     }
 
 
-    public void recoverFollowersAndFollows(String selfId , List<String> followerIds, List<String> followsIds)
+    public void recoverFollowersAndFollows(String selfId , List<String> followerIds, List<String> followsIds, List<String> followsSubjectIds)
     {
         int selfIndex = userids.get(selfId);
         followerIds.stream().forEach(follower->{
@@ -144,6 +161,13 @@ PostManager postManager = PostManager.getInstance();
             int other = userids.get(follow);
 
             follows.addEdge(selfIndex,other);
+
+        });
+
+        followsSubjectIds.stream().forEach(f->{
+            SubjectManager subjectManager = SubjectManager.getInstance();
+            Integer subjectIndex = subjectManager.getSubjectIndex(f);
+            followsSubject.addEdge(selfIndex,subjectIndex);
 
         });
 
@@ -192,6 +216,7 @@ PostManager postManager = PostManager.getInstance();
 
         follows.removeEdge(selfIndex,userToFollowIndex);
         followers.removeEdge(userToFollowIndex,selfIndex);
+
 
         UserRecord userRecord = manager.getUser(self.getId());
         userRecord.getFollows().remove(userToFollow.getId());
@@ -247,7 +272,7 @@ PostManager postManager = PostManager.getInstance();
         int selfIndex = userids.get(self.getId());
         followsSubject.addEdge(selfIndex,subjectIndex);
         UserRecord userRecord = manager.getUser(self.getId());
-        if (!userRecord.getFollowsSubject().contains(self.getId()))
+        if (!userRecord.getFollowsSubject().contains(subject.getId()))
         {
             userRecord.getFollowsSubject().add(subject.getId());
             manager.putUser(userRecord);

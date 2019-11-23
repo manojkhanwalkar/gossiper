@@ -15,6 +15,7 @@ import java.util.Map;
 
 public class SubjectManager {
 
+
     static class SubjectManagerHolder
     {
         static SubjectManager instance = new SubjectManager();
@@ -39,6 +40,16 @@ public class SubjectManager {
 
     DynamoDBManager manager = new DynamoDBManager();
 
+
+    public void recoverSubject(Subject subject) {
+        if (!subjectids.containsKey(subject.getId())) {
+
+            int subjectNum = subjectidList.size();
+            subjectidList.add(subject.getId());
+            subjectids.put(subject.getId(), subjectNum);
+
+        }
+    }
 
     public void addSubject(Subject subject)
     {
@@ -75,6 +86,8 @@ public class SubjectManager {
             manager.removeSubject(subjectRecord);
 
 
+            // TODO - delete from userrecords for all users following the subject.
+
             // let the user stay in the DAG as the next restart will remove it .
 
 
@@ -105,6 +118,18 @@ public class SubjectManager {
 
     }
 
+    public void recoverFollowers(String subjectId, List<String> followedBy) {
+
+        int subjectToFollowIndex = subjectids.get(subjectId);
+        followedBy.stream().forEach(f->{
+
+          UserManager userManager = UserManager.getInstance();
+          Integer userIndex = userManager.getUserIndex(f);
+
+          followers.addEdge(subjectToFollowIndex,userIndex);
+
+        });
+    }
 
 
     public void addFollower(int selfIndex , Subject subjectToFollow, User user)

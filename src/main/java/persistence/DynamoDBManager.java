@@ -9,6 +9,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.*;
 import data.Subject;
 import data.User;
+import manager.SubjectManager;
 import manager.UserManager;
 
 import java.util.ArrayList;
@@ -121,32 +122,65 @@ public class DynamoDBManager {
         printAllRecords(SubjectRecord.class);
     }
 
-
-
-
-    public void recover(UserManager userManager)
+    public void recover()
     {
+
+        UserManager userManager = UserManager.getInstance();
+        SubjectManager subjectManager = SubjectManager.getInstance();
 
         final AmazonDynamoDB ddb = getHandle();
         DynamoDBMapper mapper = new DynamoDBMapper(ddb);
 
-        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
-        var scanResult = mapper.scan(UserRecord.class, scanExpression);
 
-        scanResult.stream().forEach(r->{
+
+            DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
+            var scanResult = mapper.scan(UserRecord.class, scanExpression);
+
+            scanResult.stream().forEach(r -> {
                 User user = new User(r.getName());
                 //user.setName(r.getName());
-                userManager.recoverUser(user);});
+                userManager.recoverUser(user);
+            });
+
+
+
+         scanExpression = new DynamoDBScanExpression();
+        var scanResult1 = mapper.scan(SubjectRecord.class, scanExpression);
+
+        scanResult1.stream().forEach(r -> {
+            Subject subject = new Subject(r.getName());
+            //user.setName(r.getName());
+            subjectManager.recoverSubject(subject);
+        });
+
+
 
 
         scanResult.stream().forEach(r->{
 
 
-            userManager.recoverFollowersAndFollows(r.getUserId(),r.getFollowedBy(),r.getFollows());});
+            userManager.recoverFollowersAndFollows(r.getUserId(),r.getFollowedBy(),r.getFollows(),r.getFollowsSubject());});
 
         //TODO - recover user -> subject DAG
 
+        scanResult1.stream().forEach(r -> {
+            Subject subject = new Subject(r.getName());
+            //user.setName(r.getName());
+            subjectManager.recoverFollowers(r.getSubjectId(),r.getFollowedBy());
+        });
 
+
+    }
+
+    public void cleanAllRecords(Class<?> clazz)
+    {
+        final AmazonDynamoDB ddb = getHandle();
+        DynamoDBMapper mapper = new DynamoDBMapper(ddb);
+
+        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
+        var scanResult = mapper.scan(clazz, scanExpression);
+
+        scanResult.stream().forEach(r-> mapper.delete(r));
     }
 
 
@@ -219,6 +253,11 @@ public class DynamoDBManager {
        // manager.createUserTable();
 
         manager.printSubjects();
+
+        manager.printUsers();
+
+     //   manager.cleanAllRecords(UserRecord.class);
+       // manager.cleanAllRecords(SubjectRecord.class);
 
     }
 }

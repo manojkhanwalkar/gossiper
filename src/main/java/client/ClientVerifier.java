@@ -291,12 +291,22 @@ public class ClientVerifier {
 
 
         //System.out.println(subjects);
-        Subject subject = new Subject("politics");
+        Subject subject1 = new Subject("politics");
+        Subject subject2 = new Subject("technology");
+        Subject subject3 = new Subject("health");
 
 
-        verifier.followSubject(user1,subject);
 
-        verifier.UnFollowSubject(user1,subject);
+        verifier.followSubject(user1,subject1);
+        verifier.followSubject(user2,subject2);
+        verifier.followSubject(user1,subject3);
+
+
+        verifier.deleteUser(user1);
+        verifier.deleteUser(user2);
+
+
+      //  verifier.UnFollowSubject(user1,subject);
 
 
 
