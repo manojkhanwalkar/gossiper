@@ -5,6 +5,8 @@ import java.util.UUID;
 
 public class Post {
 
+   // fix post processing to take into account subject followers
+
 
     String id ;
     Subject subject;

@@ -7,6 +7,7 @@ import data.User;
 import graph.DAG;
 import persistence.DynamoDBManager;
 import persistence.SubjectRecord;
+import persistence.UserRecord;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,6 +78,8 @@ public class SubjectManager {
     {
         if (subjectids.containsKey(subject.getId()))
         {
+            List<Integer> userIndices = followers.getEdges(subjectids.get(subject.getId()));
+
             subjectids.remove(subject.getId());
             subjectidList.remove(subject.getId());
 
@@ -86,7 +89,16 @@ public class SubjectManager {
             manager.removeSubject(subjectRecord);
 
 
-            // TODO - delete from userrecords for all users following the subject.
+            //delete from userrecords for all users following the subject.
+            userIndices.stream().forEach(i->{
+
+                UserManager userManager = UserManager.getInstance();
+                String userId = userManager.useridList.get(i);
+                UserRecord userRecord = manager.getUser(userId);
+                userRecord.getFollowsSubject().remove(subject.getId());
+                manager.putUser(userRecord);
+            });
+
 
             // let the user stay in the DAG as the next restart will remove it .
 

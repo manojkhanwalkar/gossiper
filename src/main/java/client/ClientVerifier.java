@@ -248,20 +248,6 @@ public class ClientVerifier {
         verifier.unFollowUser(unFollowUser); */
 
 
-        for (int i=0;i<10;i++) {
-            Post post = new Post();
-            post.setId(UUID.randomUUID().toString());
-            post.setMessage("New Post " + System.nanoTime());
-            post.setPoster(user2);
-
-            AddPost addPost = new AddPost();
-            addPost.setPost(post);
-            verifier.post(addPost);
-        }
-
-        RetrievePost retrievePost = new RetrievePost();
-        retrievePost.setUser(user1);
-        verifier.retrieve(retrievePost);
 
         List.of("politics","technology","health").stream().forEach(s->{
 
@@ -302,11 +288,30 @@ public class ClientVerifier {
         verifier.followSubject(user1,subject3);
 
 
-        verifier.deleteUser(user1);
-        verifier.deleteUser(user2);
+    //    verifier.deleteUser(user1);
+      //  verifier.deleteUser(user2);
 
 
-      //  verifier.UnFollowSubject(user1,subject);
+        for (int i=0;i<10;i++) {
+            Post post = new Post();
+            post.setId(UUID.randomUUID().toString());
+            post.setMessage("New Post " + System.nanoTime());
+            post.setPoster(user2);
+            post.setSubject(subject1);
+
+            AddPost addPost = new AddPost();
+            addPost.setPost(post);
+            verifier.post(addPost);
+        }
+
+        RetrievePost retrievePost = new RetrievePost();
+        retrievePost.setUser(user1);
+        verifier.retrieve(retrievePost);
+
+
+
+
+        //  verifier.UnFollowSubject(user1,subject);
 
 
 

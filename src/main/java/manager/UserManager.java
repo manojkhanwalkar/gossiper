@@ -235,9 +235,33 @@ PostManager postManager = PostManager.getInstance();
 
         String posterUserId = post.getPoster().getId();
 
+        String subjectId = post.getSubject().getId();
+
+
+        SubjectManager subjectManager = SubjectManager.getInstance();
+        Integer subjectIndex = subjectManager.getSubjectIndex(subjectId);
+
+        Set<Integer> userIndices = new HashSet<>();
+
+        subjectManager.followers.getEdges(subjectIndex).stream().forEach(i->{
+
+            userIndices.add(i);
+        });
+
+
+
         int index = userids.get(posterUserId);
+
         followers.getEdges(index).stream().forEach(num->{
 
+            userIndices.add(num);
+
+        });
+
+
+        // common users across user followers and subject followers . now process that set .
+
+        userIndices.stream().forEach(num->{
             Stack<Post> posts = userPosts.get(num);
             if (posts==null)
             {
@@ -246,7 +270,9 @@ PostManager postManager = PostManager.getInstance();
             }
 
             posts.add(post);
+
         });
+
 
     }
 
