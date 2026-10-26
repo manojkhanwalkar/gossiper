@@ -2,6 +2,8 @@ package services;
 
 
 import io.dropwizard.Application;
+import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
+import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import manager.UserManager;
@@ -20,6 +22,12 @@ public class GossiperApplication extends Application<GossiperConfiguration> {
 
     @Override
     public void initialize(Bootstrap<GossiperConfiguration> bootstrap) {
+
+        // Resolve ${VAR} references in gossiper.yml from the environment (strict:
+        // an unset variable is a startup error, so secrets never fall back to defaults).
+        bootstrap.setConfigurationSourceProvider(new SubstitutingSourceProvider(
+                bootstrap.getConfigurationSourceProvider(),
+                new EnvironmentVariableSubstitutor(true)));
 
     //    IDStatusPollManager.getInstance().start();
 
