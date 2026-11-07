@@ -1,7 +1,6 @@
 package client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.cbor.CBORFactory;
 import util.*;
 
 import java.io.IOException;
@@ -34,8 +33,12 @@ public class Connection {
 
     private void initConnectionProps()
     {
-        final Properties props = System.getProperties();
-        props.setProperty("jdk.internal.httpclient.disableHostnameVerification", Boolean.TRUE.toString());
+        // Hostname verification stays on unless explicitly disabled for local testing
+        // with -Dgossiper.client.insecureSkipHostnameVerification=true.
+        if (Boolean.getBoolean("gossiper.client.insecureSkipHostnameVerification")) {
+            final Properties props = System.getProperties();
+            props.setProperty("jdk.internal.httpclient.disableHostnameVerification", Boolean.TRUE.toString());
+        }
 
     }
 

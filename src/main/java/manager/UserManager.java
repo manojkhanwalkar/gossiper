@@ -45,6 +45,9 @@ PostManager postManager = PostManager.getInstance();
 
     DynamoDBManager manager = new DynamoDBManager();
 
+    /** Most recent posts kept per user feed; older ones are dropped so feeds can't grow without bound. */
+    static final int MAX_FEED_SIZE = 1000;
+
     Map<Integer,Stack<Post>> userPosts = new HashMap<>();
 
     public Integer getUserIndex(User user) {
@@ -270,6 +273,9 @@ PostManager postManager = PostManager.getInstance();
             }
 
             posts.add(post);
+            if (posts.size() > MAX_FEED_SIZE) {
+                posts.remove(0);
+            }
 
         });
 

@@ -4,6 +4,7 @@ import data.Post;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,7 +31,15 @@ public class PostManager {
 
     //TODO - implement a TTL cache that cleans up older posts
 
-    Map<String,Post> posts = new HashMap<>();
+    /** Upper bound on posts held in memory; the oldest are evicted first. */
+    static final int MAX_POSTS = 100_000;
+
+    Map<String,Post> posts = new LinkedHashMap<>() {
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<String, Post> eldest) {
+            return size() > MAX_POSTS;
+        }
+    };
 
     public void addPost(Post post)
     {
